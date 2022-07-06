@@ -13,6 +13,8 @@ type Data = {
   datasets: any;
 }
 
+declare var Chart: any;
+
 const data = <Data>{
   labels: labels,
   datasets: [
@@ -33,13 +35,11 @@ const config = {
 
 const chartEl = document.getElementById("myChart");
 
-// @ts-ignore
 const myChart = new Chart(chartEl, config);
 const loading = false;
 
 function showSpinner() {
-// @ts-ignore
-  document.querySelector(".tBody").innerHTML = `
+  document.querySelector(".tBody")!.innerHTML = `
             <tr>
                 <td>Loading</td>
             </tr>
@@ -47,8 +47,7 @@ function showSpinner() {
 }
 
 function renderError() {
-    // @ts-ignore
-  document.querySelector(".tBody").innerHTML = `
+  document.querySelector(".tBody")!.innerHTML = `
             <tr>
                 <td>Error</td>
             </tr>
@@ -69,8 +68,7 @@ function renderTable(data) {
     html += "</tr>";
   });
 
-    // @ts-ignore
-  document.querySelector(".tBody").innerHTML = html;
+  document.querySelector(".tBody")!.innerHTML = html;
 }
 
 async function fetchData() {

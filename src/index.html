@@ -1,165 +1,168 @@
 <html>
 
 <head>
-    <title>Parcel Sandbox</title>
-    <meta charset="UTF-8" />
-    <style>
-        .empty {
-            text-align: center;
-        }
+<title>Parcel Sandbox</title>
+<meta charset="UTF-8" />
+<style>
+.empty {
+    text-align: center;
+}
 
-        footer {
-            padding: 20px 0;
-        }
-    </style>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script type="module" src="app.ts"></script>
+footer {
+    padding: 20px 0;
+}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script type="module" src="app.ts"></script>
 </head>
 
 <body>
-    <div id="app">
-        <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit
-            provident nemo velit dignissimos tempore molestiae! Tempora natus
-            delectus obcaecati hic perspiciatis saepe, doloremque aperiam
-            accusantium ad nisi rerum molestias minus?
-        </p>
-        <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis, et
-            id deleniti, doloremque in vel architecto laboriosam natus pariatur
-            ducimus suscipit exercitationem quos ab animi placeat a alias quo
-            obcaecati!
-        </p>
-        <canvas id="myChart"></canvas>
-        <table border="1" width="100%">
-            <thead>
-                <tr>
-                    <td>First</td>
-                    <td>Last</td>
-                    <td>Email</td>
-                    <td>address</td>
-                    <td>created</td>
-                    <td>balance</td>
-                </tr>
-            </thead>
-            <tbody class="tBody"></tbody>
-        </table>
+<div id="app">
+<p>
+    Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit
+    provident nemo velit dignissimos tempore molestiae! Tempora natus
+    delectus obcaecati hic perspiciatis saepe, doloremque aperiam
+    accusantium ad nisi rerum molestias minus?
+</p>
+<p>
+    Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis, et
+    id deleniti, doloremque in vel architecto laboriosam natus pariatur
+    ducimus suscipit exercitationem quos ab animi placeat a alias quo
+    obcaecati!
+</p>
+<canvas id="myChart"></canvas>
+<table border="1" width="100%">
+    <thead>
+        <tr>
+            <td>First</td>
+            <td>Last</td>
+            <td>Email</td>
+            <td>address</td>
+            <td>created</td>
+            <td>balance</td>
+        </tr>
+    </thead>
+    <tbody class="tBody"></tbody>
+</table>
 
-        <footer>
-            <button onclick="fetchData()">Fetch</button>
-        </footer>
-    </div>
+<footer>
+    <button onclick="fetchData()">Fetch</button>
+</footer>
+</div>
 
-    <script>
-        const labels = ["1.000$", "5.000$", "25.000$", "50.000$", "500.000$", "1.000.000$"];
-        const monthMap = {
-            'January': 0,
-            'February': 1,
-            'March': 2,
-            'April': 3,
-            'May': 4,
-            'June': 5,
-            'July': 6,
-            'August': 7,
-            'September': 8,
-            'October': 9,
-            'November': 10,
-            'December': 11
-        };
 
-        const data = {
-            labels: labels,
-            datasets: [
-                {
-                    label: "users",
-                    backgroundColor: "rgb(255, 99, 132)",
-                    borderColor: "rgb(255, 99, 132)",
-                    data: [],
-                }
-            ]
-        };
+<!-- Issue Todo : sorting by nationality and age -->
 
-        const config = {
-            type: "line",
-            data: data,
-            options: {}
-        };
+<script>
+const labels = ["1", "2", "3", "4", "5", "6"];
+const monthMap = {
+    'January': 0,
+    'February': 1,
+    'March': 2,
+    'April': 3,
+    'May': 4,
+    'June': 5,
+    'July': 6,
+    'August': 7,
+    'September': 8,
+    'October': 9,
+    'November': 10,
+    'December': 11
+};
 
-        const chartEl = document.getElementById("myChart");
-        const myChart = new Chart(chartEl, config);
-
-        function showSpinner() {
-            document.querySelector(".tBody").innerHTML = `
-                <tr>
-                    <td>Loading</td>
-                </tr>
-            `;
+const data = {
+    labels: labels,
+    datasets: [
+        {
+            label: "users",
+            backgroundColor: "rgb(255, 99, 132)",
+            borderColor: "rgb(255, 99, 132)",
+            data: [],
         }
+    ]
+};
 
-        function renderError() {
-            document.querySelector(".tBody").innerHTML = `
-                <tr>
-                    <td>Error</td>
-                </tr>
-            `;
+const config = {
+    type: "line",
+    data: data,
+    options: {}
+};
+
+const chartEl = document.getElementById("myChart");
+const myChart = new Chart(chartEl, config);
+
+function showSpinner() {
+    document.querySelector(".tBody").innerHTML = `
+        <tr>
+            <td>Loading</td>
+        </tr>
+    `;
+}
+
+function renderError() {
+    document.querySelector(".tBody").innerHTML = `
+        <tr>
+            <td>Error</td>
+        </tr>
+    `;
+}
+
+function renderTable(data) {
+    let html = "";
+    const dateList = [];
+
+    const usersWithTime = data.map(element => {
+        const [month, day, year] = element.created.split(' ');
+        const time = new Date(
+            Number(year),
+            monthMap[month],
+            Number(day.replace(',', ' ').replace(' ', '')
+        ));
+
+        return {
+            ...element,
+            time: time.getTime()
         }
+    });
 
-        function renderTable(data) {
-            let html = "";
-            const dateList = [];
+    usersWithTime
+        .sort((x, y) => x.time > y.time ? 1 : -1)
+        .slice(0, 9)
+        .forEach((element) => {
+            html += "<tr>";
+            html += `<td>${element.first}</td>`;
+            html += `<td>${element.last}</td>`;
+            html += `<td>${element.email}</td>`;
+            html += `<td>${element.address}</td>`;
+            html += `<td>${element.created}</td>`;
+            html += `<td>${element.balance}</td>`;
+            html += "</tr>";
 
-            const usersWithTime = data.map(element => {
-                const [month, day, year] = element.created.split(' ');
-                const time = new Date(
-                    Number(year),
-                    monthMap[month],
-                    Number(day.replace(',', ' ').replace(' ', '')
-                ));
+            dateList.push(element.time)
+        });
 
-                return {
-                    ...element,
-                    time: time.getTime()
-                }
-            });
+    myChart.data.datasets[0].data = dateList;
+    myChart.update('active');
 
-            usersWithTime
-                .sort((x, y) => x.time > y.time ? 1 : -1)
-                .slice(0, 9)
-                .forEach((element) => {
-                    html += "<tr>";
-                    html += `<td>${element.first}</td>`;
-                    html += `<td>${element.last}</td>`;
-                    html += `<td>${element.email}</td>`;
-                    html += `<td>${element.address}</td>`;
-                    html += `<td>${element.created}</td>`;
-                    html += `<td>${element.balance}</td>`;
-                    html += "</tr>";
+    document.querySelector(".tBody").innerHTML = html;
+}
 
-                    dateList.push(element.time)
-                });
+async function fetchData() {
+    try {
+        showSpinner();
+        const res = await fetch(
+            "https://randomapi.com/api/6de6abfedb24f889e0b5f675edc50deb?fmt=raw&sole"
+        );
+        const data = await res.json();
 
-            myChart.data.datasets[0].data = dateList;
-            myChart.update('active');
-
-            document.querySelector(".tBody").innerHTML = html;
-        }
-
-        async function fetchData() {
-            try {
-                showSpinner();
-                const res = await fetch(
-                    "https://randomapi.com/api/6de6abfedb24f889e0b5f675edc50deb?fmt=raw&sole"
-                );
-                const data = await res.json();
-
-                renderTable(data);
-            } catch (e) {
-                console.info(e)
-                renderError();
-            } finally {
-            }
-        }
-    </script>
+        renderTable(data);
+    } catch (e) {
+        console.info(e)
+        renderError();
+    } finally {
+    }
+}
+</script>
 </body>
 
 </html>
