@@ -11,6 +11,7 @@ type Data = {
   balance: string
   labels: any;
   datasets: any;
+  age: any;
 }
 
 declare var Chart: any;
@@ -39,11 +40,10 @@ const myChart = new Chart(chartEl, config);
 const loading = false;
 
 function showSpinner() {
-  document.querySelector(".tBody")!.innerHTML = `
-            <tr>
-                <td>Loading</td>
-            </tr>
-        `;
+  const el = document.querySelector(".tBody");
+  if (el) {
+    el.innerHTML = `<tr><td>Loading</td></tr>`;
+  }
 }
 
 function renderError() {
@@ -56,32 +56,72 @@ function renderError() {
 
 function renderTable(data) {
   let html = "";
+  const dateList = [];
 
-  data.forEach((element) => {
-    html += "<tr>";
-    html += `<td>${element.first}</td>`;
-    html += `<td>${element.last}</td>`;
-    html += `<td>${element.email}</td>`;
-    html += `<td>${element.address}</td>`;
-    html += `<td>${element.created}</td>`;
-    html += `<td>${element.balance}</td>`;
-    html += "</tr>";
+  const usersWithTime = data.map(element => {
+      const [day, year] = element.created.split(' ');
+      const time = new Date(
+          Number(year),
+          Number(day.replace(',', ' ').replace(' ', '')
+      ));
+
+      return {
+          ...element,
+          time: time.getTime()
+      }
   });
+
+  usersWithTime
+      .sort((x, y) => x.time > y.time ? 1 : -1)
+      .slice(0, 9)
+      .forEach((element) => {
+          html += "<tr>";
+          html += `<td>${element.name.first}</td>`;
+          html += `<td>${element.name.last}</td>`;
+          html += `<td>${element.email}</td>`;
+          html += `<td>${element.location.street.name}, ${element.location.street.number}</td>`;
+          html += `<td>${element.dob.age}</td>`;
+          html += "</tr>";
+
+          // @ts-ignore
+          dateList.push(element.time)
+      });
+
+  myChart.data.datasets[0].data = dateList;
+  myChart.update('active');
 
   document.querySelector(".tBody")!.innerHTML = html;
 }
 
 async function fetchData() {
   try {
-    showSpinner();
-    const res = await fetch(
-      "https://randomapi.com/api/6de6abfedb24f889e0b5f675edc50deb?fmt=raw&sole"
-    );
-    const data = await res.json();
+      showSpinner();
+      const res = await fetch(
+          "https://randomuser.me/api/?results=1000&nat=fr&gender=male"
+      );
+      const data = await res.json();
 
-    renderTable(data);
-  } catch {
-    renderError();
+      renderTable(data);
+  } catch (e) {
+      console.info(e)
+      renderError();
   } finally {
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
