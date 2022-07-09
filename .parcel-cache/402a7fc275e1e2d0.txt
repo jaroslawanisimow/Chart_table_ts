@@ -14,7 +14,7 @@
 116C:\Users\Yaroslav\Desktop\New folder\chart_table_test\node_modules\lmdb\dependencies\lmdb\libraries\liblmdb\mtest6.c133017410802524433 0
 97C:\Users\Yaroslav\Desktop\New folder\chart_table_test\node_modules\@parcel\utils\lib\index.js.map133017410804573453 0
 80C:\Users\Yaroslav\Desktop\New folder\chart_table_test\node_modules\timsort\build133017410787439699 1
-64C:\Users\Yaroslav\Desktop\New folder\chart_table_test\src\app.ts133017445004665352 0
+64C:\Users\Yaroslav\Desktop\New folder\chart_table_test\src\app.ts133018297988753666 0
 103C:\Users\Yaroslav\Desktop\New folder\chart_table_test\node_modules\@parcel\config-default\test\.babelrc133017410782010904 0
 117C:\Users\Yaroslav\Desktop\New folder\chart_table_test\node_modules\lmdb\dependencies\lmdb\libraries\liblmdb\chacha8.h133017410805398045 0
 110C:\Users\Yaroslav\Desktop\New folder\chart_table_test\node_modules\type-fest\source\union-to-intersection.d.ts133017410797128192 0
@@ -27,7 +27,7 @@
 57C:\Users\Yaroslav\Desktop\New folder\chart_table_test\src133017410579101157 1
 75C:\Users\Yaroslav\Desktop\New folder\chart_table_test\node_modules\mdn-data133017410795298388 1
 113C:\Users\Yaroslav\Desktop\New folder\chart_table_test\node_modules\caniuse-lite\data\features\css-first-letter.js133017410808473180 0
-58C:\Users\Yaroslav\Desktop\New folder\chart_table_test\dist133017445007137115 1
+58C:\Users\Yaroslav\Desktop\New folder\chart_table_test\dist133018297990519090 1
 102C:\Users\Yaroslav\Desktop\New folder\chart_table_test\node_modules\css-tree\lib\generator\sourceMap.js133017410806143507 0
 75C:\Users\Yaroslav\Desktop\New folder\chart_table_test\node_modules\escalade133017410787859691 1
 87C:\Users\Yaroslav\Desktop\New folder\chart_table_test\node_modules\json5\lib\parse.d.ts133017410792102286 0
@@ -77,7 +77,7 @@
 79C:\Users\Yaroslav\Desktop\New folder\chart_table_test\node_modules\browserslist133017410789182571 1
 93C:\Users\Yaroslav\Desktop\New folder\chart_table_test\node_modules\@parcel\cache\lib\index.js133017410788139744 0
 100C:\Users\Yaroslav\Desktop\New folder\chart_table_test\node_modules\htmlnano\docs\docs\040-presets.md133017410801088273 0
-68C:\Users\Yaroslav\Desktop\New folder\chart_table_test\src\index.html133017435786993817 0
+68C:\Users\Yaroslav\Desktop\New folder\chart_table_test\src\index.html133018297257321030 0
 92C:\Users\Yaroslav\Desktop\New folder\chart_table_test\node_modules\browserslist\package.json133017410788089714 0
 104C:\Users\Yaroslav\Desktop\New folder\chart_table_test\node_modules\@swc\helpers\src\_async_generator.mjs133017410803394049 0
 73C:\Users\Yaroslav\Desktop\New folder\chart_table_test\node_modules\terser133017410801398279 1
@@ -1057,7 +1057,7 @@
 98C:\Users\Yaroslav\Desktop\New folder\chart_table_test\node_modules\css-tree\lib\syntax\node\CDC.js133017410789642532 0
 83C:\Users\Yaroslav\Desktop\New folder\chart_table_test\node_modules\get-port\license133017410784469786 0
 86C:\Users\Yaroslav\Desktop\New folder\chart_table_test\node_modules\terser\lib\scope.js133017410799878267 0
-80C:\Users\Yaroslav\Desktop\New folder\chart_table_test\dist\index.6b815632.js.map133017445007117240 0
+80C:\Users\Yaroslav\Desktop\New folder\chart_table_test\dist\index.6b815632.js.map133018297990509103 0
 90C:\Users\Yaroslav\Desktop\New folder\chart_table_test\node_modules\terser\lib\sourcemap.js133017410800158263 0
 99C:\Users\Yaroslav\Desktop\New folder\chart_table_test\node_modules\@parcel\transformer-json\LICENSE133017410781890866 0
 100C:\Users\Yaroslav\Desktop\New folder\chart_table_test\node_modules\@parcel\reporter-cli\src\emoji.js133017410789282532 0
@@ -4147,5 +4147,5 @@
 76C:\Users\Yaroslav\Desktop\New folder\chart_table_test\node_modules\.bin\svgo133017410822148116 0
 80C:\Users\Yaroslav\Desktop\New folder\chart_table_test\node_modules\.bin\svgo.cmd133017410822148116 0
 80C:\Users\Yaroslav\Desktop\New folder\chart_table_test\node_modules\.bin\svgo.ps1133017410822148116 0
-76C:\Users\Yaroslav\Desktop\New folder\chart_table_test\dist\index.6b815632.js133017445007047103 0
-69C:\Users\Yaroslav\Desktop\New folder\chart_table_test\dist\index.html133017437217881049 0
+76C:\Users\Yaroslav\Desktop\New folder\chart_table_test\dist\index.6b815632.js133018297990469102 0
+69C:\Users\Yaroslav\Desktop\New folder\chart_table_test\dist\index.html133018297468998004 0

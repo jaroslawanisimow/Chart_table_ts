@@ -56,60 +56,73 @@ function renderError() {
 
 function renderTable(data) {
   let html = "";
-  const dateList = [];
-
-  const usersWithTime = data.map(element => {
-      const [day, year] = element.created.split(' ');
-      const time = new Date(
-          Number(year),
-          Number(day.replace(',', ' ').replace(' ', '')
-      ));
-
-      return {
-          ...element,
-          time: time.getTime()
-      }
+  
+  data.forEach((element) => {
+    html += "<tr>";
+    html += `<td>${element.first}</td>`;
+    html += `<td>${element.last}</td>`;
+    html += `<td>${element.email}</td>`;
+    html += `<td>${element.address}</td>`;
+    html += `<td>${element.created}</td>`;
+    html += `<td>${element.balance}</td>`;
+    html += "</tr>";
   });
-
-  usersWithTime
-      .sort((x, y) => x.time > y.time ? 1 : -1)
-      .slice(0, 9)
-      .forEach((element) => {
-          html += "<tr>";
-          html += `<td>${element.name.first}</td>`;
-          html += `<td>${element.name.last}</td>`;
-          html += `<td>${element.email}</td>`;
-          html += `<td>${element.location.street.name}, ${element.location.street.number}</td>`;
-          html += `<td>${element.dob.age}</td>`;
-          html += "</tr>";
-
-          // @ts-ignore
-          dateList.push(element.time)
-      });
-
-  myChart.data.datasets[0].data = dateList;
-  myChart.update('active');
-
+  
   document.querySelector(".tBody")!.innerHTML = html;
 }
 
+
 async function fetchData() {
   try {
-      showSpinner();
-      const res = await fetch(
-          "https://randomuser.me/api/?results=1000&nat=fr&gender=male"
-      );
-      const data = await res.json();
+    showSpinner();
+    const res = await fetch(
+      "https://randomuser.me/api/?results=1000&nat=fr&gender=male"
+    );
+    const data = await res.json();
 
-      renderTable(data);
-  } catch (e) {
-      console.info(e)
-      renderError();
+    renderTable(data);
+  } catch {
+    renderError();
   } finally {
   }
 }
 
 
+
+
+
+// <<< Fetching with Error >>>
+
+// const dateList = [];
+//   const usersWithTime = data.map(element => {
+//       const [day, year] = element.created.split(' ');
+//       const time = new Date(
+//           Number(year),
+//           Number(day.replace(',', ' ').replace(' ', '')
+//       ));
+
+//       return {
+//           ...element,
+//           time: time.getTime()
+//       }
+//   });
+
+//   usersWithTime
+//       .sort((x, y) => x.time > y.time ? 1 : -1)
+//       .slice(0, 9)
+//       .forEach((element) => {
+//           html += "<tr>";
+//           html += `<td>${element.name.first}</td>`;
+//           html += `<td>${element.name.last}</td>`;
+//           html += `<td>${element.email}</td>`;
+//           html += `<td>${element.location.street.name}, ${element.location.street.number}</td>`;
+//           html += `<td>${element.dob.age}</td>`;
+//           html += "</tr>";
+//    dateList.push(element.time)
+// });
+
+//    myChart.data.datasets[0].data = dateList;
+//    myChart.update('active');
 
 
 
