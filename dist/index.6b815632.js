@@ -533,30 +533,22 @@ function hmrAcceptRun(bundle, id) {
 
 },{}],"kuM8f":[function(require,module,exports) {
 const labels = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June"
+    "20-29",
+    "30-39",
+    "40-49",
+    "50-59",
+    "60-69",
+    "70-79"
 ];
 const data = {
-    labels: labels,
+    labels,
     datasets: [
         {
-            label: "Users",
+            label: "users",
             backgroundColor: "rgb(255, 99, 132)",
             borderColor: "rgb(255, 99, 132)",
-            data: [
-                0,
-                10,
-                5,
-                2,
-                20,
-                30,
-                45
-            ]
-        }, 
+            data: []
+        }
     ]
 };
 const config = {
@@ -565,70 +557,57 @@ const config = {
     options: {}
 };
 const chartEl = document.getElementById("myChart");
+// @ts-ignore
 const myChart = new Chart(chartEl, config);
-const loading = false;
 function showSpinner() {
-    const el = document.querySelector(".tBody");
-    if (el) el.innerHTML = `<tr><td>Loading</td></tr>`;
+    document.querySelector(".tBody").innerHTML = `
+        <tr>
+            <td>Loading</td>
+        </tr>
+    `;
 }
 function renderError() {
     document.querySelector(".tBody").innerHTML = `
-            <tr>
-                <td>Error</td>
-            </tr>
-        `;
+        <tr>
+            <td>Error</td>
+        </tr>
+    `;
 }
-function renderTable(data1) {
+function renderTable(users) {
     let html = "";
-    data1.forEach((element)=>{
+    users.sort((x, y)=>x.dob.age < y.dob.age ? 1 : -1).slice(0, 99).forEach((user)=>{
         html += "<tr>";
-        html += `<td>${element.first}</td>`;
-        html += `<td>${element.last}</td>`;
-        html += `<td>${element.email}</td>`;
-        html += `<td>${element.address}</td>`;
-        html += `<td>${element.created}</td>`;
-        html += `<td>${element.balance}</td>`;
+        html += `<td>${user.name.title}. ${user.name.first} ${user.name.last}</td>`;
+        html += `<td>${user.email}</td>`;
+        html += `<td>${user.location.street.name}, ${user.location.street.number}</td>`;
+        html += `<td>${user.dob.age}</td>`;
         html += "</tr>";
     });
     document.querySelector(".tBody").innerHTML = html;
 }
+function renderChart(users) {
+    const userAgeList = users.map((user)=>user.dob.age).sort();
+    myChart.data.datasets[0].data = [
+        userAgeList.reduce((acc, curr)=>curr > 20 && curr < 29 ? acc + 1 : acc, 0),
+        userAgeList.reduce((acc, curr)=>curr > 30 && curr < 39 ? acc + 1 : acc, 0),
+        userAgeList.reduce((acc, curr)=>curr > 40 && curr < 49 ? acc + 1 : acc, 0),
+        userAgeList.reduce((acc, curr)=>curr > 50 && curr < 59 ? acc + 1 : acc, 0),
+        userAgeList.reduce((acc, curr)=>curr > 60 && curr < 69 ? acc + 1 : acc, 0),
+        userAgeList.reduce((acc, curr)=>curr > 70 && curr < 79 ? acc + 1 : acc, 0)
+    ];
+    myChart.update("active");
+}
 async function fetchData() {
     try {
         showSpinner();
-        const res = await fetch("https://randomuser.me/api/?results=1000&nat=fr&gender=male");
-        const data2 = await res.json();
-        renderTable(data2);
-    } catch  {
+        const res = await fetch("https://randomuser.me/api/?nat=fr&results=1000&gender=male");
+        const data1 = await res.json();
+        renderTable(data1.results);
+        renderChart(data1.results);
+    } catch (e) {
         renderError();
-    } finally{}
-} // <<< Fetching with Error >>>
- // const dateList = [];
- //   const usersWithTime = data.map(element => {
- //       const [day, year] = element.created.split(' ');
- //       const time = new Date(
- //           Number(year),
- //           Number(day.replace(',', ' ').replace(' ', '')
- //       ));
- //       return {
- //           ...element,
- //           time: time.getTime()
- //       }
- //   });
- //   usersWithTime
- //       .sort((x, y) => x.time > y.time ? 1 : -1)
- //       .slice(0, 9)
- //       .forEach((element) => {
- //           html += "<tr>";
- //           html += `<td>${element.name.first}</td>`;
- //           html += `<td>${element.name.last}</td>`;
- //           html += `<td>${element.email}</td>`;
- //           html += `<td>${element.location.street.name}, ${element.location.street.number}</td>`;
- //           html += `<td>${element.dob.age}</td>`;
- //           html += "</tr>";
- //    dateList.push(element.time)
- // });
- //    myChart.data.datasets[0].data = dateList;
- //    myChart.update('active');
+    }
+}
 
 },{}]},["4ibyE","kuM8f"], "kuM8f", "parcelRequirea3da")
 

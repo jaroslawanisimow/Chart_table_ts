@@ -1,140 +1,104 @@
-const labels = ["January", "February", "March", "April", "May", "June"];
+const labels = ["20-29", "30-39", "40-49", "50-59", "60-69", "70-79"];
 
-
-type Data = {
-  data : string;
-  first : string;
-  last : string;
-  email: string;
-  address: any;
-  created: any;
-  balance: string
-  labels: any;
-  datasets: any;
-  age: any;
-}
-
-declare var Chart: any;
-
-const data = <Data>{
-  labels: labels,
-  datasets: [
-    {
-      label: "Users",
-      backgroundColor: "rgb(255, 99, 132)",
-      borderColor: "rgb(255, 99, 132)",
-      data: [0, 10, 5, 2, 20, 30, 45],
-    },
-  ],
+const data = {
+    labels,
+    datasets: [
+        {
+            label: "users",
+            backgroundColor: "rgb(255, 99, 132)",
+            borderColor: "rgb(255, 99, 132)",
+            data: [],
+        }
+    ]
 };
 
 const config = {
-  type: "line",
-  data: data,
-  options: {},
+    type: "line",
+    data: data,
+    options: {}
 };
 
 const chartEl = document.getElementById("myChart");
-
+// @ts-ignore
 const myChart = new Chart(chartEl, config);
-const loading = false;
 
 function showSpinner() {
-  const el = document.querySelector(".tBody");
-  if (el) {
-    el.innerHTML = `<tr><td>Loading</td></tr>`;
-  }
+    document.querySelector(".tBody")!.innerHTML = `
+        <tr>
+            <td>Loading</td>
+        </tr>
+    `;
 }
 
 function renderError() {
-  document.querySelector(".tBody")!.innerHTML = `
-            <tr>
-                <td>Error</td>
-            </tr>
-        `;
+    document.querySelector(".tBody")!.innerHTML = `
+        <tr>
+            <td>Error</td>
+        </tr>
+    `;
 }
 
-function renderTable(data) {
-  let html = "";
-  
-  data.forEach((element) => {
-    html += "<tr>";
-    html += `<td>${element.first}</td>`;
-    html += `<td>${element.last}</td>`;
-    html += `<td>${element.email}</td>`;
-    html += `<td>${element.address}</td>`;
-    html += `<td>${element.created}</td>`;
-    html += `<td>${element.balance}</td>`;
-    html += "</tr>";
-  });
-  
-  document.querySelector(".tBody")!.innerHTML = html;
-}
-
-
-async function fetchData() {
-  try {
-    showSpinner();
-    const res = await fetch(
-      "https://randomuser.me/api/?results=1000&nat=fr&gender=male"
-    );
-    const data = await res.json();
-
-    renderTable(data);
-  } catch {
-    renderError();
-  } finally {
+type User = {
+  name: {
+    title: string;
+    first: string;
+    last: string;
+  }
+  email: string;
+  location: {
+    street: {
+      name: string;
+      number: number;
+    }
+  }
+  dob: {
+    age: number;
   }
 }
 
 
+function renderTable(users: User[]) {
+    let html = "";
 
+    users
+        .sort((x, y) => x.dob.age < y.dob.age? 1 : -1)
+        .slice(0, 99)
+        .forEach((user) => {
+            html += "<tr>";
+            html += `<td>${user.name.title}. ${user.name.first} ${user.name.last}</td>`;
+            html += `<td>${user.email}</td>`;
+            html += `<td>${user.location.street.name}, ${user.location.street.number}</td>`;
+            html += `<td>${user.dob.age}</td>`;
+            html += "</tr>";
+        });
 
+    document.querySelector(".tBody")!.innerHTML = html;
+}
 
-// <<< Fetching with Error >>>
+function renderChart(users: User[]) {
+    const userAgeList = users.map(user => user.dob.age).sort();
 
-// const dateList = [];
-//   const usersWithTime = data.map(element => {
-//       const [day, year] = element.created.split(' ');
-//       const time = new Date(
-//           Number(year),
-//           Number(day.replace(',', ' ').replace(' ', '')
-//       ));
+    myChart.data.datasets[0].data = [
+        userAgeList.reduce((acc, curr) => curr > 20 && curr < 29 ? acc + 1: acc, 0),
+        userAgeList.reduce((acc, curr) => curr > 30 && curr < 39 ? acc + 1: acc, 0),
+        userAgeList.reduce((acc, curr) => curr > 40 && curr < 49 ? acc + 1: acc, 0),
+        userAgeList.reduce((acc, curr) => curr > 50 && curr < 59 ? acc + 1: acc, 0),
+        userAgeList.reduce((acc, curr) => curr > 60 && curr < 69 ? acc + 1: acc, 0),
+        userAgeList.reduce((acc, curr) => curr > 70 && curr < 79 ? acc + 1: acc, 0)
+    ];
+    myChart.update('active');
+}
 
-//       return {
-//           ...element,
-//           time: time.getTime()
-//       }
-//   });
-
-//   usersWithTime
-//       .sort((x, y) => x.time > y.time ? 1 : -1)
-//       .slice(0, 9)
-//       .forEach((element) => {
-//           html += "<tr>";
-//           html += `<td>${element.name.first}</td>`;
-//           html += `<td>${element.name.last}</td>`;
-//           html += `<td>${element.email}</td>`;
-//           html += `<td>${element.location.street.name}, ${element.location.street.number}</td>`;
-//           html += `<td>${element.dob.age}</td>`;
-//           html += "</tr>";
-//    dateList.push(element.time)
-// });
-
-//    myChart.data.datasets[0].data = dateList;
-//    myChart.update('active');
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+async function fetchData() {
+    try {
+        showSpinner();
+        const res = await fetch(
+            "https://randomuser.me/api/?nat=fr&results=1000&gender=male"
+        );
+        const data = await res.json();
+        renderTable(data.results);
+        renderChart(data.results);
+    } catch (e) {
+        renderError();
+    }
+}
